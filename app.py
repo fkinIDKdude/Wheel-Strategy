@@ -402,14 +402,7 @@ def tab_recommendations(params: dict) -> None:
     }
     show = {k: v for k, v in csp_cols.items() if k in recs_df.columns}
     csp_display = recs_df[list(show.keys())].rename(columns=show)
-    st.dataframe(
-        csp_display.style.background_gradient(
-            subset=["Ann. ROC %"] if "Ann. ROC %" in csp_display.columns else [],
-            cmap="Greens",
-        ),
-        use_container_width=True,
-        hide_index=True,
-    )
+    st.dataframe(csp_display, use_container_width=True, hide_index=True)
 
     # CSV download
     st.download_button(
