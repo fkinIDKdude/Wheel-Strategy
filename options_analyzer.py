@@ -112,8 +112,12 @@ def _select_csp_strike(
         pop = prob_otm_put(spot, K, T, r, iv)
 
         # Open interest and volume for liquidity check
-        oi = int(row.get("openInterest") or 0)
-        vol = int(row.get("volume") or 0)
+        # Use pandas to safely handle NaN values before converting to int
+        import math as _math
+        raw_oi  = row.get("openInterest")
+        raw_vol = row.get("volume")
+        oi  = 0 if raw_oi  is None or (isinstance(raw_oi,  float) and _math.isnan(raw_oi))  else int(raw_oi)
+        vol = 0 if raw_vol is None or (isinstance(raw_vol, float) and _math.isnan(raw_vol)) else int(raw_vol)
 
         rows.append({
             "strike": K,
